@@ -24,15 +24,16 @@ def predict():
         # Create empty input
         new_house = pd.DataFrame([[0] * len(columns)], columns=columns)
 
-        # Fill values safely
-        new_house["bedrooms"]    = int(data.get("bedrooms", 0))
-        new_house["bathrooms"]   = float(data.get("bathrooms", 0))
-        new_house["sqft_living"] = int(data.get("sqft_living", 0))
-        new_house["sqft_lot"]    = int(data.get("sqft_lot", 0))
-        new_house["floors"]      = int(data.get("floors", 0))
+        # Fill values — use realistic defaults for optional fields so that
+        # omitted inputs don't produce extreme out-of-range predictions.
+        new_house["bedrooms"]    = int(data.get("bedrooms", 3))
+        new_house["bathrooms"]   = float(data.get("bathrooms", 2.0))
+        new_house["sqft_living"] = int(data.get("sqft_living", 1800))
+        new_house["sqft_lot"]    = int(data.get("sqft_lot", 5000))
+        new_house["floors"]      = int(data.get("floors", 1))
         new_house["waterfront"]  = int(data.get("waterfront", 0))
-        new_house["condition"]   = int(data.get("condition", 0))
-        new_house["yr_built"]    = int(data.get("yr_built", 0))
+        new_house["condition"]   = int(data.get("condition", 3))
+        new_house["yr_built"]    = int(data.get("yr_built", 1990))
 
         # City encoding (safe)
         city = str(data.get("city", "")).strip()
