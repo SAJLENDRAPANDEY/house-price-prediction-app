@@ -26,6 +26,10 @@ def predict():
 
         # Fill values — use realistic defaults for optional fields so that
         # omitted inputs don't produce extreme out-of-range predictions.
+        # Defaults reflect typical King County house characteristics:
+        #   bedrooms=3, bathrooms=2, sqft_living=1800 (near dataset median),
+        #   sqft_lot=5000, floors=1, waterfront=0 (most common),
+        #   condition=3 (average, scale 1–5), yr_built=1990 (near dataset mean).
         new_house["bedrooms"]    = int(data.get("bedrooms", 3))
         new_house["bathrooms"]   = float(data.get("bathrooms", 2.0))
         new_house["sqft_living"] = int(data.get("sqft_living", 1800))

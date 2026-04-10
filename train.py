@@ -147,15 +147,16 @@ def train(csv_path, output_dir="."):
              floors=2, waterfront=0, condition=4, yr_built=2010, city="Bellevue"),
     ]
     for case in cases:
-        city = case.pop("city")
+        city = case["city"]
         row = pd.DataFrame([[0] * len(columns)], columns=columns)
-        for feat, val in case.items():
-            row[feat] = val
+        for feat in NUMERIC_FEATURES:
+            row[feat] = case[feat]
         city_col = f"city_{city}" if city else None
         if city_col and city_col in row.columns:
             row[city_col] = 1
         pred = model.predict(scaler.transform(row))[0]
-        print(f"  {case}  city={city!r:12s} → ${pred:,.0f}")
+        features_str = {k: v for k, v in case.items() if k != "city"}
+        print(f"  {features_str}  city={city!r:12s} → ${pred:,.0f}")
 
     # Persist artifacts
     joblib.dump(model,   os.path.join(output_dir, "model.pkl"))
